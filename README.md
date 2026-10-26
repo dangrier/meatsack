@@ -1,6 +1,7 @@
 # 🧍 meatsack
 
 [![CI](https://github.com/dangrier/meatsack/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/dangrier/meatsack/actions/workflows/ci.yml)
+[![Security](https://github.com/dangrier/meatsack/actions/workflows/security.yml/badge.svg?branch=main)](https://github.com/dangrier/meatsack/actions/workflows/security.yml)
 
 An MCP server that lets a model ask a **human** for help.
 

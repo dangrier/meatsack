@@ -1,0 +1,53 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  # New advisories get published even when the code doesn't change.
+  schedule:
+    - cron: '17 20 * * 0' # Mondays 6:17am AEST
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  grype:
+    name: Grype
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read # checkout
+      security-events: write # upload results to the Security tab
+    # Actions are pinned to commits because this job can write to the
+    # Security tab. Dependabot bumps the commit and the comment together.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: anchore/scan-action/download-grype@27805bf3b4e84b4a5c980df22ed233c00390a439 # v7.4.2
+        id: grype
+
+      # Checks package-lock.json (runtime deps; grype skips devDependencies)
+      # and the actions used in .github/workflows. Prints a table, writes
+      # SARIF, and fails on high or critical. Same check locally:
+      #   grype dir:. --fail-on high
+      # To accept a finding you can't fix yet, ignore it in .grype.yaml.
+      - name: Scan
+        env:
+          GRYPE: ${{ steps.grype.outputs.cmd }}
+        run: |
+          "$GRYPE" dir:. --fail-on high -o table -o sarif=grype.sarif
+
+      # Upload even when the scan fails, so the findings show up.
+      - name: Upload to the Security tab
+        if: ${{ !cancelled() && hashFiles('grype.sarif') != '' }}
+        uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          sarif_file: grype.sarif

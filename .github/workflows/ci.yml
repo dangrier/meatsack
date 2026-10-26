@@ -54,3 +54,17 @@ jobs:
 
       - name: Package contents
         run: npm pack --dry-run
+
+  # main's ruleset requires a check named "ci". It passes only if every test
+  # job did. always() matters: a skipped required check counts as a pass.
+  ci:
+    name: ci
+    if: ${{ always() }}
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: All test jobs passed
+        run: test "$RESULT" = success
+        env:
+          RESULT: ${{ needs.test.result }}
