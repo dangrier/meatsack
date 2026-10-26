@@ -1,6 +1,7 @@
 # 🧍 meatsack
 
 [![CI](https://github.com/dangrier/meatsack/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/dangrier/meatsack/actions/workflows/ci.yml)
+[![Security](https://github.com/dangrier/meatsack/actions/workflows/security.yml/badge.svg?branch=main)](https://github.com/dangrier/meatsack/actions/workflows/security.yml)
 
 An MCP server that lets a model ask a **human** for help.
 
@@ -67,14 +68,38 @@ capital letters, because models are optimists.
 
 ## Install
 
+Nothing to install by hand. Your MCP client fetches meatsack from npm and runs
+it with `npx`. You need Node 20 or newer.
+
+## Wire it into a client
+
+Claude Code, for every project:
+
+```bash
+claude mcp add --scope user meatsack -- npx -y meatsack
+```
+
+Claude Desktop (`claude_desktop_config.json`), a project's `.mcp.json`, or
+anything else that speaks MCP over stdio:
+
+```json
+{
+  "mcpServers": {
+    "meatsack": {
+      "command": "npx",
+      "args": ["-y", "meatsack"]
+    }
+  }
+}
+```
+
+### From a clone
+
 ```bash
 npm install && npm run build
 ```
 
-## Wire it into a client
-
-Claude Code (`.mcp.json` in your project, or `claude mcp add`), Claude Desktop
-(`claude_desktop_config.json`), or anything else that speaks MCP over stdio:
+Then point the client at your build instead of npm:
 
 ```json
 {
@@ -145,6 +170,8 @@ The trade-off, stated plainly:
 
 ## Try it without a model
 
+In a clone (see [From a clone](#from-a-clone)):
+
 ```bash
 npm run demo
 ```
@@ -206,7 +233,8 @@ with a valid token. A phone is a pair of hands, not another robot.
 | `MEATSACK_OPEN`      | on          | `0` stops it opening your browser; it logs the URL instead. |
 | `MEATSACK_PAIR_TTL`  | `60`        | Minutes a phone pairing lasts before it shuts itself off (1–480). |
 
-`node dist/index.js --ui-only` runs just the backend, no MCP. It never joins
+`npx meatsack --ui-only` (or `npm run ui` in a clone) runs just the backend,
+no MCP. It never joins
 someone else's hub — if the port is busy it takes a free one.
 
 ## How it behaves
@@ -256,3 +284,7 @@ src/index.ts   wires it together: hub-or-client election, stdio transport,
 public/        the prompt UI (no build step, no framework)
 scripts/       demo.mjs and smoke.mjs, both real MCP clients
 ```
+
+## License
+
+MIT. See [LICENSE](LICENSE).

@@ -2,12 +2,37 @@
   "name": "meatsack",
   "version": "0.1.0",
   "description": "MCP server that asks a human (via a local prompt UI) to do, answer, or physically act.",
+  "mcpName": "io.github.dangrier/meatsack",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "human-in-the-loop",
+    "claude",
+    "ai-agents"
+  ],
+  "homepage": "https://github.com/dangrier/meatsack#readme",
+  "bugs": {
+    "url": "https://github.com/dangrier/meatsack/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dangrier/meatsack.git"
+  },
+  "license": "MIT",
+  "author": "Dan Grier",
   "type": "module",
   "bin": {
     "meatsack": "dist/index.js"
   },
+  "files": [
+    "dist",
+    "public"
+  ],
   "scripts": {
     "build": "tsc",
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "prepack": "npm run clean && npm run build",
     "start": "node dist/index.js",
     "dev": "tsc --watch",
     "smoke": "node scripts/smoke.mjs",
