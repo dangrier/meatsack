@@ -1,0 +1,29 @@
+{
+  "name": "meatsack",
+  "version": "0.1.0",
+  "description": "MCP server that asks a human (via a local prompt UI) to do, answer, or physically act.",
+  "type": "module",
+  "bin": {
+    "meatsack": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch",
+    "smoke": "node scripts/smoke.mjs",
+    "ui": "node dist/index.js --ui-only",
+    "demo": "node scripts/demo.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "qrcode-svg": "^1.1.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.0",
+    "typescript": "^5.9.3"
+  }
+}

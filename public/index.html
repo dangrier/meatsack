@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>meatsack</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%A7%8D%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">🧍</span>
+        <div>
+          <h1>meatsack</h1>
+          <p class="tagline">a machine would like a word</p>
+        </div>
+      </div>
+      <div class="top-right">
+        <button id="pair" class="ghost" type="button" title="Answer on your phone">📱</button>
+        <button id="notify" class="ghost" type="button" title="Desktop notifications">🔔</button>
+        <span id="conn" class="conn" data-state="connecting">connecting…</span>
+      </div>
+    </header>
+
+    <dialog id="pair-dialog" class="sheet">
+      <div class="sheet-head">
+        <h2>Answer on your phone</h2>
+        <button id="pair-close" class="ghost" type="button" aria-label="Close">✕</button>
+      </div>
+      <div id="pair-body" class="sheet-body"></div>
+    </dialog>
+
+    <main>
+      <section id="pending-wrap" hidden>
+        <h2 class="section-title">Waiting on you <span id="pending-count" class="pill">0</span></h2>
+        <div id="pending" class="stack"></div>
+      </section>
+
+      <section id="empty" class="empty">
+        <p class="empty-emoji" aria-hidden="true">🫥</p>
+        <p class="empty-title">Nothing needs a human.</p>
+        <p class="empty-sub">Leave this tab open. It will wake up when something does.</p>
+      </section>
+
+      <section id="history-wrap" hidden>
+        <h2 class="section-title muted">Already handled</h2>
+        <div id="history" class="stack"></div>
+      </section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
